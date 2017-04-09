@@ -138,8 +138,11 @@ retryOnFail(function() {
   startScript()
   
   // Step2
-  .then(stepCheck(continueFlag, 2.1, 'Find clickElement "Electronics"', function(){return $browser.waitForAndFindElement(By.linkText("Electronics"), StepTimeout);}))
-  .then(stepCheck(continueFlag, 2.2, 'Click Element "Electronics"', function(element){ element.click(); }))
+  .then(stepCheck(continueFlag, 2.1, 'Find clickElement "Electronics"', function(){
+    return $browser.waitForAndFindElement(By.linkText("Electronics"), StepTimeout).then(function (element) {
+      element.click();
+    });
+  }))
 
   // Step 3
   .then(stepCheck(continueFlag, 3.1, 'Find clickElement "//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"', $browser.waitForAndFindElement(By.xpath("//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"), StepTimeout)))
