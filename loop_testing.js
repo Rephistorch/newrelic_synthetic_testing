@@ -9,10 +9,10 @@ function retryOnFail(scriptSteps)
   {
     try {
       console.log("This is run number: " + i + " of 3");
-      return scriptSteps(), success = true;     
+      scriptSteps();
+      success = true;     
     } catch(err){
       console.log("Script failed, trying again.");
-      continue;
     }
   }
 }
@@ -118,55 +118,32 @@ retryOnFail(function() {
     $browser.addHeader('User-Agent', UserAgent);
     console.log('Setting User-Agent to ' + UserAgent);
   }
-
-  // Get browser capabilities and do nothing with it, so that we start with a then-able command
-  // ### I'm not quite sure why this is necessary.  I'm going to see what starting on the browser.get does.
-  //$browser.getCapabilities().then(function () { })
-
-  // Step 1
-  // First step has to be a function with a return value so we can start the .then chain.
-  function startScript(){ 
-    log(1, '$browser.get("http://nop.cs.rackspace.com/")');
-    try {
-      return $browser.get("http://nop.cs.rackspace.com/");
-    } catch(err) {
-      log(1, "Couldn't load http://nop.cs.rackspace.com/: " + err.message);
-      continueFlag = false;
-      return;
-    }
-  }
-  startScript()
+  
+  log(1, '$browser.get("http://nop.cs.rackspace.com/")');
+  $browser.get("http://nop.cs.rackspace.com/");
   
   // Step2
-  .then(stepCheck(continueFlag, 2.1, 'Find clickElement "Electronics"', function(){
-    return $browser.waitForAndFindElement(By.linkText("Electronics"), StepTimeout).then(function (element) {
-      element.click();
-    });
-  }))
-
-  // Step 3
-  .then(stepCheck(continueFlag, 3.1, 'Find clickElement "//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"', $browser.waitForAndFindElement(By.xpath("//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"), StepTimeout)))
-  .then(stepCheck(continueFlag, 3.2, 'Click on clickElement "//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"', function(element) { element.click(); }))
+  var electronics = $browser.findElement(By.linkText("Electronics"));
+  electronics.click();
   
+  // Step 3
+  var camera = $browser.findElement(By.xpath("//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"));
+  camera.click();
+                                    
   // Step 4
-  .then(stepCheck(continueFlag, 4.1, 'Find "input.button-2.product-box-add-to-cart-button"', $browser.waitForAndFindElement(By.css("input.button-2.product-box-add-to-cart-button"), StepTimeout)))
-  .then(stepCheck(continueFlag, 4.2, 'clickElement "input.button-2.product-box-add-to-cart-button"', function(element){ element.click(); }))
+  var addCart1 = $browser.findElement(By.css("input.button-2.product-box-add-to-cart-button"));
+  addCart1.click();
 
   // Step 5
-  .then(stepCheck(continueFlag, 5.1, 'Find "add-to-cart-button-14"', $browser.waitForAndFindElement(By.id("add-to-cart-button-14"), StepTimeout)))
-  .then(stepCheck(continueFlag, 5.2, 'Click Element "add-to-cart-button-14"', function(element){ element.click(); }))
+  var addCart2 = $browser.findElement(By.id("add-to-cart-button-14"));
+  addCart2.click();
 
   // Step 6
-  .then(stepCheck(continueFlag, 6.1, 'Find clickElement "//div[@class=\'footer-upper\']//a[.=\'Shopping cart\']"', $browser.waitForAndFindElement(By.xpath("//div[@class=\'footer-upper\']//a[.=\'Shopping cart\']"), StepTimeout)))
-  .then(stepCheck(continueFlag, 6.2, 'Click Element "//div[@class=\'footer-upper\']//a[.=\'Shopping cart\']"', function(element){ element.click(); }))
-
+  var footer = $browser.findElement(By.xpath("//div[@class=\'footer-upper\']//a[.=\'Shopping cart\']"));
+  footer.click();
+  
   // Das Ende
-  .then(function() {
-    log(lastStep, '');
-    console.log('Browser script execution SUCCEEDED.');
-  }, function(err) {
-    console.log ('Browser script execution FAILED.');
-    throw(err);
-  })
+  log(lastStep, '');
+  console.log('Browser script execution SUCCEEDED.');
 });
 /** END OF SCRIPT **/
