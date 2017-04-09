@@ -118,6 +118,9 @@ retryOnFail(function() {
     $browser.addHeader('User-Agent', UserAgent);
     console.log('Setting User-Agent to ' + UserAgent);
   }
+  
+  // Variables
+  var element;
 
   // Get browser capabilities and do nothing with it, so that we start with a then-able command
   // ### I'm not quite sure why this is necessary.  I'm going to see what starting on the browser.get does.
@@ -138,8 +141,8 @@ retryOnFail(function() {
   startScript()
   
   // Step2
-  .then(stepCheck(continueFlag, 2.1, 'Find clickElement "Electronics"', function(){$browser.waitForAndFindElement(By.linkText("Electronics"), StepTimeout);}))
-  .then(stepCheck(continueFlag, 2.2, 'Click Element "Electronics"', function(element){ element.click(); }))
+  .then(stepCheck(continueFlag, 2.1, 'Find clickElement "Electronics"', function(){element = $browser.waitForAndFindElement(By.linkText("Electronics"), StepTimeout);}))
+  .then(stepCheck(continueFlag, 2.2, 'Click Element "Electronics"', function(){ element.click(); }))
 
   // Step 3
   .then(stepCheck(continueFlag, 3.1, 'Find clickElement "//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"', $browser.waitForAndFindElement(By.xpath("//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"), StepTimeout)))
