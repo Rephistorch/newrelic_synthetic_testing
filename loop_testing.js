@@ -123,22 +123,27 @@ retryOnFail(function() {
   $browser.get("http://nop.cs.rackspace.com/");
   
   // Step2
+  $browser.waitForElement(By.linkText("Electronics"));
   var electronics = $browser.findElement(By.linkText("Electronics"));
   electronics.click();
   
   // Step 3
+  $browser.waitForElement(By.xpath("//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"));
   var camera = $browser.findElement(By.xpath("//div[@class=\'side-2\']//a[normalize-space(.)=\'Camera & photo\']"));
   camera.click();
                                     
   // Step 4
+  $browser.waitForElement(By.css("input.button-2.product-box-add-to-cart-button"));
   var addCart1 = $browser.findElement(By.css("input.button-2.product-box-add-to-cart-button"));
   addCart1.click();
 
   // Step 5
+  $browser.waitForElement(By.id("add-to-cart-button-14"));
   var addCart2 = $browser.findElement(By.id("add-to-cart-button-14"));
   addCart2.click();
 
   // Step 6
+  $browser.waitForElement(By.xpath("//div[@class=\'footer-upper\']//a[.=\'Shopping cart\']"));
   var footer = $browser.findElement(By.xpath("//div[@class=\'footer-upper\']//a[.=\'Shopping cart\']"));
   footer.click();
   
