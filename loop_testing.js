@@ -5,10 +5,10 @@ function retryOnFail(scriptSteps)
 {
   var retryCount = 3;
   var success = false;
-  for (var i = 0; i < retryCount && !success; i++)
+  for (var i = 1; i <= retryCount && !success; i++)
   {
     try {
-      console.log("This is run number: " + i + " of 3");
+      console.log("This is run number: " + i + " of " + retryCount);
       scriptSteps();
       success = true;     
     } catch(err){
